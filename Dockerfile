@@ -4,4 +4,4 @@ COPY requirements.txt /app/requirements.txt
 WORKDIR /app
 RUN pip install -r requirements.txt
 COPY . /app
-CMD ["chainlit", "app.py"]
+CMD ["chainlit", "app.py", "--port", "7860"]
