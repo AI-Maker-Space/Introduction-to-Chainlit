@@ -14,35 +14,6 @@ import arxiv
 import chainlit as cl
 from chainlit import user_session
 
-user_env = user_session.get("env")
-
-system_template = """Use the following pieces of context to answer the users question.
-If you don't know the answer, just say that you don't know, don't try to make up an answer.
-ALWAYS return a "SOURCES" part in your answer.
-The "SOURCES" part should be a reference to the source of the document from which you got your answer.
-
-Example of your response should be:
-
-```
-The answer is foo
-
-SOURCES: 
-Title: xyz 
-Page Number: 1
-URL: https://arxiv.org/abs/X.Y.Z
-```
-
-Begin!
-----------------
-{summaries}"""
-messages = [
-    SystemMessagePromptTemplate.from_template(system_template),
-    HumanMessagePromptTemplate.from_template("{question}"),
-]
-prompt = ChatPromptTemplate.from_messages(messages)
-chain_type_kwargs = {"prompt": prompt}
-
-
 @cl.langchain_factory
 def init():
     arxiv_query = None
@@ -76,7 +47,6 @@ def init():
     # Create a Chroma vector store
     embeddings = OpenAIEmbeddings(
         disallowed_special=(),
-        openai_api_key=user_env.get("OPENAI_API_KEY")
     )
     docsearch = Chroma.from_documents(pdf_data, embeddings)
 
@@ -85,7 +55,6 @@ def init():
         ChatOpenAI(
             model_name="gpt-4",
             temperature=0,
-            openai_api_key=user_env.get("OPENAI_API_KEY"),
         ),
         chain_type="stuff",
         retriever=docsearch.as_retriever(),
