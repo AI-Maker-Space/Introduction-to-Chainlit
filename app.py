@@ -74,7 +74,10 @@ def init():
             pdf_data.append(document)
 
     # Create a Chroma vector store
-    embeddings = OpenAIEmbeddings(disallowed_special=())
+    embeddings = OpenAIEmbeddings(
+        disallowed_special=(),
+        openai_api_key=user_env.get("OPENAI_API_KEY")
+    )
     docsearch = Chroma.from_documents(pdf_data, embeddings)
 
     # Create a chain that uses the Chroma vector store
