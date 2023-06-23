@@ -1,6 +1,6 @@
 arxiv==1.4.7
 langchain==0.0.193
-chainlit
+chainlit==0.4.1
 openai
 chromadb
 tiktoken
