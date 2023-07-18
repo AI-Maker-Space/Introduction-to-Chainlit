@@ -24,7 +24,7 @@ async def init():
             content="Please enter a topic to begin!", timeout=15
         ).send()
 
-    # Obtain the top 30 results from Arxiv for the query
+    # Obtain the top 3 results from Arxiv for the query
     search = arxiv.Search(
         query=arxiv_query["content"],
         max_results=3,
